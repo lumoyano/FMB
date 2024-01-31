@@ -1,4 +1,4 @@
-package fmb.controller;
+package main.fmb.controller;
 
 public class ControllerMain {
 }
