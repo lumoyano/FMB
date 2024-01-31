@@ -1,7 +1,8 @@
-package fmb;
+package main.fmb;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import main.fmb.tools.UI;
 
 public class DataEntry extends Application {
     public static void main(String[] args) {
@@ -10,6 +11,7 @@ public class DataEntry extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.show();
+        new UI().start(stage);
     }
+
 }
