@@ -23,11 +23,6 @@
               <MenuItem mnemonicParsing="false" text="Close" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
               <MenuItem mnemonicParsing="false" text="About" />
@@ -68,11 +63,10 @@
                            <children>
                               <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="11.0" prefHeight="400.0" prefWidth="160.0">
                                  <children>
-                                    <Button alignment="CENTER" mnemonicParsing="false" text="Refresh" />
-                                    <Button mnemonicParsing="false" text="Button" />
-                                    <Button mnemonicParsing="false" text="Button" />
-                                    <Button mnemonicParsing="false" text="Button" />
-                                    <Button mnemonicParsing="false" text="Button" />
+                                    <Button alignment="CENTER" mnemonicParsing="false" text="Refresh" textAlignment="CENTER" />
+                                    <Button mnemonicParsing="false" text="Edit Entry" />
+                                    <Button mnemonicParsing="false" text="Create Entry" />
+                                    <Button mnemonicParsing="false" text="Delete Entry" />
                                  </children>
                               </VBox>
                            </children>
