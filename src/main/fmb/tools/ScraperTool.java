@@ -11,9 +11,9 @@ import java.util.ArrayList;
 
 public class ScraperTool {
 
-    public static void main(String[] args) throws IOException {
+    /*public static void main(String[] args) throws IOException {
         String test = getSoup("https://incidecoder.com/products/mac-lipglass");
-    }
+    }*/
 
     public static String getSoup(String link) throws IOException {
         Document doc = Jsoup.connect(link).get();
