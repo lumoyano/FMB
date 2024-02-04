@@ -1,4 +1,4 @@
-package main.fmb.tools;
+package fmb.tools;
 
 import java.util.ArrayList;
 import java.util.Arrays;

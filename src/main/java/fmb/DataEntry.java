@@ -1,10 +1,10 @@
-package main.fmb;
+package fmb;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import main.fmb.tools.UI;
+import fmb.tools.UI;
 
-import main.fmb.tools.ScraperTool;
+import fmb.tools.ScraperTool;
 
 import java.io.IOException;
 

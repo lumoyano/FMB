@@ -1,4 +1,4 @@
-package main.fmb.tools;
+package fmb.tools;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

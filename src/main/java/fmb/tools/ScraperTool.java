@@ -1,4 +1,4 @@
-package main.fmb.tools;
+package fmb.tools;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
