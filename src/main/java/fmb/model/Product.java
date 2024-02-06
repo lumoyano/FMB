@@ -4,17 +4,17 @@ import java.util.ArrayList;
 
 public class Product {
     private int productID;
-    private String productName;
     private String productBrand;
-    private String productType;
+    private String productName;
     private ArrayList<String> ingredients;
+    private String productType;
 
-    public Product(int productID, String productName, String productBrand, String productType, ArrayList<String> ingredients) {
+    public Product(int productID, String productBrand, String productName, ArrayList<String> ingredients, String productType) {
         this.productID = productID;
-        this.productName = productName;
         this.productBrand = productBrand;
-        this.productType = productType;
+        this.productName = productName;
         this.ingredients = ingredients;
+        this.productType = productType;
     }
 
     public Product() {
