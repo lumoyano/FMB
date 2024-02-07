@@ -28,27 +28,34 @@ public class ProductData {
         loadDataFromDB();
     }
 
-    private void loadDataFromDB() {
+    private static void loadDataFromDB() {
             String url = DBConfig.getDatabaseUrl();
             String username = DBConfig.getDBUsername();
             String password = DBConfig.getDBPassword();
+
+            try {
+                Class.forName("org.postgresql.Driver");
+            } catch (java.lang.ClassNotFoundException e) {
+                System.out.println(e.getMessage());
+            }
 
             try {
                 Connection db = DriverManager.getConnection(url, username, password);
                 Statement st = db.createStatement();
                 ResultSet resultSet = st.executeQuery("SELECT * FROM PRODUCT");
                 while (resultSet.next()) {
-                    /*
-                    column_name	data_type
-                    productid	integer
-                    productbrand	integer
-                    productname	character varying
-                    ingredients	text
-                    producttype	character varying
-                    */
+//                    int productId = resultSet.getInt("productid");
+//                    String productName = resultSet.getString("productname");
+//                    String productType = resultSet.getString("producttype");
+//                    String productBrand = resultSet.getString("productbrand");
+//                    Array ingredientsArray = resultSet.getArray("ingredients");
+//                    String[] ingredients = (String[]) ingredientsArray.getArray();
+                    System.out.println(resultSet);
+
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
     }
+
 }
