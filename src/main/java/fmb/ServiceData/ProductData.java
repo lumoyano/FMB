@@ -8,12 +8,12 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class ProductData {
-    private ArrayList<Product> currentList = new ArrayList<>();
+    private static ArrayList<Product> currentList = new ArrayList<>();
 
     private static ProductData instance = new ProductData();
 
     private ProductData() {
-        loadDataFromDB();
+
     }
 
     public static ProductData getInstance() {
@@ -47,10 +47,11 @@ public class ProductData {
             Connection db = DriverManager.getConnection(url, username, password);
             Statement st = db.createStatement();
             ResultSet resultSet = st.executeQuery("SELECT * FROM PRODUCT");
+            currentList.clear();
             while (resultSet.next()) {
                 //get all fields
-                int productId = resultSet.getInt("productid");
-                System.out.println(productId);
+                int productID = resultSet.getInt("productid");
+                System.out.println(productID);
                 String productName = resultSet.getString("productname");
                 System.out.println(productName);
                 String productType = resultSet.getString("producttype");
@@ -67,7 +68,11 @@ public class ProductData {
                 }
                 System.out.println(ingredients);
                 //create new product with all fields
+                Product currentRow = new Product(productID, productBrand, productName, ingredients, productType);
+                currentList.add(currentRow);
             }
+            st.close();
+            db.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
