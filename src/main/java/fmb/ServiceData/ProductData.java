@@ -29,9 +29,13 @@ public class ProductData {
     }
 
     private static void loadDataFromDB() {
-            String url = DBConfig.getDatabaseUrl();
-            String username = DBConfig.getDBUsername();
-            String password = DBConfig.getDBPassword();
+        /*
+        Full link has a format jdbc:postgresql://server:port5432/defaultdatabase?userparam&passwdparam
+        ElephantSQL provides a link that is both incorrect and misspelled, Use this as a rule
+         */
+        String url = DBConfig.getDatabaseUrl(); //jdbc:postgresql://server:port5432/defaultdatabase
+        String username = DBConfig.getDBUsername();
+        String password = DBConfig.getDBPassword();
 
             try {
                 Class.forName("org.postgresql.Driver");
@@ -50,7 +54,7 @@ public class ProductData {
 //                    String productBrand = resultSet.getString("productbrand");
 //                    Array ingredientsArray = resultSet.getArray("ingredients");
 //                    String[] ingredients = (String[]) ingredientsArray.getArray();
-                    System.out.println(resultSet);
+                    System.out.println(resultSet.toString());
 
                 }
             } catch (SQLException e) {
