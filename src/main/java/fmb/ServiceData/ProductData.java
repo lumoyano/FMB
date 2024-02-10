@@ -37,29 +37,40 @@ public class ProductData {
         String username = DBConfig.getDBUsername();
         String password = DBConfig.getDBPassword();
 
-            try {
-                Class.forName("org.postgresql.Driver");
-            } catch (java.lang.ClassNotFoundException e) {
-                System.out.println(e.getMessage());
-            }
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (java.lang.ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
 
-            try {
-                Connection db = DriverManager.getConnection(url, username, password);
-                Statement st = db.createStatement();
-                ResultSet resultSet = st.executeQuery("SELECT * FROM PRODUCT");
-                while (resultSet.next()) {
-//                    int productId = resultSet.getInt("productid");
-//                    String productName = resultSet.getString("productname");
-//                    String productType = resultSet.getString("producttype");
-//                    String productBrand = resultSet.getString("productbrand");
-//                    Array ingredientsArray = resultSet.getArray("ingredients");
-//                    String[] ingredients = (String[]) ingredientsArray.getArray();
-                    System.out.println(resultSet.toString());
-
+        try {
+            Connection db = DriverManager.getConnection(url, username, password);
+            Statement st = db.createStatement();
+            ResultSet resultSet = st.executeQuery("SELECT * FROM PRODUCT");
+            while (resultSet.next()) {
+                //get all fields
+                int productId = resultSet.getInt("productid");
+                System.out.println(productId);
+                String productName = resultSet.getString("productname");
+                System.out.println(productName);
+                String productType = resultSet.getString("producttype");
+                System.out.println(productType);
+                String productBrand = resultSet.getString("productbrand");
+                System.out.println(productBrand);
+                String[] ingredientsArray = new String[]{resultSet.getString("ingredients")};
+                System.out.println(ingredientsArray.toString());
+                //Parse ingredients into an arraylist
+                ArrayList<String> ingredients = new ArrayList<>(); //this is the item used for product constructor
+                for (String s :
+                        ingredientsArray) {
+                    ingredients.add(s.trim());
                 }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+                System.out.println(ingredients);
+                //create new product with all fields
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
