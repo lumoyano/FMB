@@ -1,9 +1,8 @@
-package fmb.ServiceData;
+package fmb.serviceData;
 
 import fmb.model.Product;
 import fmb.tools.DBConfig;
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.util.ArrayList;
 

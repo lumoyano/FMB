@@ -1,14 +1,9 @@
 package fmb;
 
-import fmb.ServiceData.ProductData;
-import fmb.tools.DBConfig;
+import fmb.serviceData.ProductData;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import fmb.tools.UI;
-
-import fmb.tools.ScraperTool;
-
-import java.io.IOException;
 
 public class DataEntry extends Application {
     public static void main(String[] args){
