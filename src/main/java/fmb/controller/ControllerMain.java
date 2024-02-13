@@ -31,9 +31,12 @@ public class ControllerMain implements Initializable {
         brandColumn.setCellValueFactory(new PropertyValueFactory<>("productBrand"));
 
         TableColumn<Product, String> typeColumn = new TableColumn<>("Type");
-        brandColumn.setCellValueFactory(new PropertyValueFactory<>("productType"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<>("productType"));
 
-        tableView.getColumns().addAll(idColumn, nameColumn, brandColumn, typeColumn);
+        TableColumn<Product, String[]> ingredientsColumn = new TableColumn<>("Ingredients");
+        ingredientsColumn.setCellValueFactory(new PropertyValueFactory<>("ingredients"));
+
+        tableView.getColumns().addAll(idColumn, nameColumn, brandColumn, typeColumn,ingredientsColumn);
 
         // Populate TableView with data
         ArrayList<Product> instance = ProductData.getInstance().getCurrentList();
