@@ -79,29 +79,39 @@ public class ProductData {
     public void addProduct(Product product) { //Unfinished method
         try (Connection db = DriverManager
                 .getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
-             PreparedStatement statement = db.prepareStatement("INSERT INTO products (product_name) VALUES (?)")) {
+            PreparedStatement statement = db.prepareStatement("INSERT INTO products (productid, productname, producttype, productbrand,ingredients) VALUES (?, ?, ?, ?, ?)")){
+
+            statement.setInt(1, product.getProductID());
+            statement.setString(2, product.getProductName());
+            statement.setString(3, product.getProductType());
+            // Assuming ingredients is a String array, you need to convert it to a string representation
+            statement.setString(4, product.getProductBrand());
+            ArrayList<String> ingredientsString = product.getIngredients();
+            statement.setString(5, String.valueOf(ingredientsString));
 
             System.out.println(statement);
 
-            statement.setString(1, product.getProductName());
-            // Set other parameters...
 //            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void updateProduct(Product product) { //Unfinished method
-        try (Connection db = DriverManager
-                .getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
-             PreparedStatement statement = db.prepareStatement("UPDATE products SET product_name = ? WHERE product_id = ?")) {
+    public void updateProduct(Product product) {
+        try (Connection db = DriverManager.getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
+             PreparedStatement statement = db.prepareStatement("UPDATE products SET productname = ?, producttype = ?, productbrand = ?, ingredients = ? WHERE productid = ?")) {
+
+            statement.setString(1, product.getProductName());
+            statement.setString(2, product.getProductType());
+            statement.setString(3, product.getProductBrand());
+            // Assuming ingredients is a String array, you need to convert it to a string representation
+            ArrayList<String> ingredientsString = product.getIngredients();
+            statement.setString(4, String.valueOf(ingredientsString));
+            statement.setInt(5, product.getProductID());
 
             System.out.println(statement);
 
-            statement.setString(1, product.getProductName());
-            // Set other parameters...
-            statement.setInt(2, product.getProductID());
-//            statement.executeUpdate();
+           // statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

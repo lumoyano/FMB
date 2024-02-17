@@ -53,15 +53,14 @@ public class ControllerMain implements Initializable {
         ProductData.getInstance().refreshData();
         showAlert("Data Refreshed", "Data has been refreshed successfully!");
     }
-
     @FXML
     private void newRow() {
-        ProductData.getInstance().addProduct(new Product());
+        ProductData.getInstance().addProduct(new Product(123,"Brand","Name",new ArrayList<String>(),"type" ));
     }
 
     @FXML
     private void editRow() {
-        ProductData.getInstance().updateProduct(new Product());
+        ProductData.getInstance().updateProduct(new Product(123,"DifferentBrand","DifferentName",new ArrayList<String>(),"differenttype" ));
     }
 
     @FXML
@@ -76,5 +75,6 @@ public class ControllerMain implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
+    
 
 }
