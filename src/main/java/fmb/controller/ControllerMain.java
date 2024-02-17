@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -48,9 +49,24 @@ public class ControllerMain implements Initializable {
 
 
     @FXML
-    private void refreshData(){
+    private void refreshData() {
         ProductData.getInstance().refreshData();
         showAlert("Data Refreshed", "Data has been refreshed successfully!");
+    }
+
+    @FXML
+    private void newRow() {
+        ProductData.getInstance().addProduct(new Product());
+    }
+
+    @FXML
+    private void editRow() {
+        ProductData.getInstance().updateProduct(new Product());
+    }
+
+    @FXML
+    private void deleteRow() {
+        ProductData.getInstance().deleteProduct(1);
     }
 
     private void showAlert(String title, String message) {
