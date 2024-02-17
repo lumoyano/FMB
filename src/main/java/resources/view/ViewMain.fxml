@@ -23,7 +23,9 @@
               <menus>
                 <Menu mnemonicParsing="false" text="File">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Close" />
+                    <MenuItem mnemonicParsing="false" text="Set connection" />
+                        <MenuItem mnemonicParsing="false" text="Clear connection" />
+                        <MenuItem mnemonicParsing="false" text="Close" />
                   </items>
                 </Menu>
               </menus>
@@ -66,7 +68,7 @@
                   <Insets left="10.0" top="10.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" prefWidth="150.0" text="New Row">
+            <Button fx:id="newRowButton" mnemonicParsing="false" onAction="#newRow" prefWidth="150.0" text="New Row">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -74,12 +76,12 @@
                   <Insets left="10.0" top="15.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" prefWidth="150.0" text="Edit Row">
+            <Button fx:id="editRowButton" mnemonicParsing="false" onAction="#editRow" prefWidth="150.0" text="Edit Row">
                <VBox.margin>
                   <Insets left="10.0" top="15.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" prefWidth="150.0" text="Delete Row">
+            <Button fx:id="deleteRowButton" mnemonicParsing="false" onAction="#deleteRow" prefWidth="150.0" text="Delete Row">
                <VBox.margin>
                   <Insets left="10.0" top="15.0" />
                </VBox.margin>
