@@ -24,7 +24,7 @@
                 <Menu mnemonicParsing="false" text="File">
                   <items>
                     <MenuItem mnemonicParsing="false" onAction="#setConnection" text="Set connection" />
-                        <MenuItem mnemonicParsing="false" text="Clear connection" />
+                        <MenuItem mnemonicParsing="false" onAction="#clearConnection" text="Clear connection" />
                         <MenuItem mnemonicParsing="false" text="Close" />
                   </items>
                 </Menu>
