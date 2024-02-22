@@ -51,11 +51,12 @@ public class ProductData {
             System.out.println(e.getMessage());
         }
 
+        currentList.clear();
+
         try (Connection db = DriverManager.getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
              Statement st = db.createStatement()) {
 
             ResultSet resultSet = st.executeQuery("SELECT * FROM PRODUCT");
-            currentList.clear();
             while (resultSet.next()) {
                 //get all fields
                 int productID = resultSet.getInt("productid");
