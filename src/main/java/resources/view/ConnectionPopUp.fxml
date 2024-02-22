@@ -17,12 +17,12 @@
   </rowConstraints>
    <children>
       <Label text="Connection URL" />
-      <TextField GridPane.columnIndex="1" />
+      <TextField fx:id="urlField" promptText="postgresql://server:5432/databasename" GridPane.columnIndex="1" />
       <Label text="Username" GridPane.rowIndex="1" />
-      <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <TextField fx:id="usernameField" promptText="user tag only" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Label text="Password" GridPane.rowIndex="2" />
-      <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Button mnemonicParsing="false" text="Set Connection" onAction="#save" translateX="233.0" translateY="-5.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextField fx:id="passwdField" promptText="password only" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Button mnemonicParsing="false" onAction="#save" text="Set Connection" translateX="233.0" translateY="-5.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
    </children>
    <padding>
       <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
