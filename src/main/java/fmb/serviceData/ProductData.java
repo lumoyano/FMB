@@ -14,9 +14,9 @@ public class ProductData {
     Full link has a format jdbc:postgresql://server:port5432/defaultdatabase?userparam&passwdparam
     ElephantSQL provides a link that is both incorrect and misspelled, Use this as a rule
      */
-    private final String URL = DBConfig.getDatabaseUrl(); //jdbc:postgresql://server:port5432/defaultdatabase
-    private final String USERNAME = DBConfig.getDBUsername();
-    private final String PASSWORD = DBConfig.getDBPassword();
+    private String URL = DBConfig.getDatabaseUrl(); //jdbc:postgresql://server:port5432/defaultdatabase
+    private String USERNAME = DBConfig.getDBUsername();
+    private String PASSWORD = DBConfig.getDBPassword();
 
     private static ProductData instance = new ProductData();
 
@@ -31,11 +31,17 @@ public class ProductData {
     }
 
     public void refreshData() {
+        refreshProperties();
         loadDataFromDB();
     }
 
-    private static void loadDataFromDB() {
+    public void refreshProperties() {
+        URL = DBConfig.getDatabaseUrl(); //jdbc:postgresql://server:port5432/defaultdatabase
+        USERNAME = DBConfig.getDBUsername();
+        PASSWORD = DBConfig.getDBPassword();
+    }
 
+    private static void loadDataFromDB() {
 
         try {
             Class.forName("org.postgresql.Driver");
