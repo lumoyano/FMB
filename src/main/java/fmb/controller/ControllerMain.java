@@ -2,6 +2,7 @@ package fmb.controller;
 
 import fmb.model.Product;
 import fmb.serviceData.ProductData;
+import fmb.tools.ErrorTool;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,15 +10,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -58,7 +56,7 @@ public class ControllerMain implements Initializable {
     @FXML
     private void refreshData() {
         ProductData.getInstance().refreshData();
-        showAlert("Data Refreshed", "Data has been refreshed successfully!");
+        alert("Data Refreshed", "Data has been refreshed successfully!");
     }
     @FXML
     private void newRow() {
@@ -76,12 +74,8 @@ public class ControllerMain implements Initializable {
     }
 
     @FXML
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    public void alert(String title, String message) {
+        ErrorTool.showAlert(title, message);
     }
 
     @FXML
@@ -102,4 +96,8 @@ public class ControllerMain implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
+
+    @FXML
+    public void clearConnection() {}
 }

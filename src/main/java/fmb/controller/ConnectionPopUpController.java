@@ -1,6 +1,7 @@
 package fmb.controller;
 
 import fmb.tools.DBConfig;
+import fmb.tools.ErrorTool;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
@@ -33,27 +34,9 @@ public class ConnectionPopUpController {
         }
 
         //notify success and close
-        showAlertAndClose("Connection", "Information saved. Please refresh data before modifying the tables.");
-    }
-
-    @FXML
-    public void clearConnection() {
-        
-    }
-
-    @FXML
-    private void showAlertAndClose(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-
-        alert.setOnCloseRequest(dialogEvent -> {
-            alert.close();
-            stage.close();
-        });
-
-        alert.showAndWait();
+        ErrorTool.showAlertAndClose("Connection",
+                "Information saved. Please refresh data before modifying the tables.",
+                this.stage);
     }
 
     public void setStage(Stage stage) {
