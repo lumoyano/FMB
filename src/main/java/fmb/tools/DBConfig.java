@@ -7,7 +7,19 @@ import java.io.OutputStream;
 import java.util.Properties;
 
 public class DBConfig {
+    /*
+    # THE PROPERTIES FILE PATH SHOULD BE src/main/java/resources/productData.properties
 
+    @DEV
+    # THIS FILE IS NOT COMMITED FOR SECURITY PURPOSES, AND SHOULD
+    # NOT BE COMMITED BACK TO THE REPOSITORY WITH CREDENTIALS IN IT
+
+
+    # Database Configuration
+    # Full link format: jdbc:postgresql://server:port5432/defaultdatabase?userparam&passwdparam
+
+    # ElephantSQL provides a link that is both incorrect and misspelled, Use this as a rule
+    */
     private static final String CONFIG_FILE_PATH = "src/main/java/resources/productData.properties";
 
     private static Properties properties;
@@ -23,15 +35,15 @@ public class DBConfig {
     }
 
     public static String getDatabaseUrl() {
-        return properties.getProperty("DB_URL");
+        return properties.getProperty("DB_URL"); //should be jdbc:postgresql://server:port5432/defaultdatabase
     }
 
     public static String getDBUsername() {
-        return properties.getProperty("DB_USERNAME");
+        return properties.getProperty("DB_USERNAME"); //username alone
     }
 
     public static String getDBPassword() {
-        return properties.getProperty("DB_PASSWORD");
+        return properties.getProperty("DB_PASSWORD"); //passwd alone
     }
 
     public static void setProperties(String url, String username, String password) {
