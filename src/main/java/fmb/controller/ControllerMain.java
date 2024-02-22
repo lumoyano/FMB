@@ -87,20 +87,19 @@ public class ControllerMain implements Initializable {
     @FXML
     private void setConnection() {
         try {
+            //load popup view
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/ConnectionPopUp.fxml"));
             Parent root = loader.load();
+            //set respective controller
             ConnectionPopUpController controller = loader.getController();
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
+            //Setup to close popup by using stage.close within alert. See ShowAlertAndClose
+            controller.setStage(stage);
             stage.showAndWait();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @FXML
-    public void save (ActionEvent event) {
-        showAlert("Im a message,", "ya dummy");
     }
 }
