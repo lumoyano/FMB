@@ -1,7 +1,9 @@
 package fmb.serviceData;
 
+import fmb.controller.ControllerMain;
 import fmb.model.Product;
 import fmb.tools.DBConfig;
+import fmb.tools.ErrorTool;
 
 import java.net.URL;
 import java.sql.*;
@@ -78,7 +80,7 @@ public class ProductData {
                 currentList.add(currentRow);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            ErrorTool.showAlert("DATABASE ERROR", "Properties file error: connection expected different url OR username OR password");
         }
     }
 
