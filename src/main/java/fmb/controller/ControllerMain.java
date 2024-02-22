@@ -27,8 +27,18 @@ public class ControllerMain implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        populateTableValues();
+    }
+
+    @FXML
+    private void populateTableValues() {
+        // Clear TableView
+        tableView.getItems().clear();
+        tableView.getColumns().clear();
+
         TableColumn<Product, Integer> idColumn = new TableColumn<>("ID");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("productID"));
+        idColumn.setPrefWidth(25);
 
         TableColumn<Product, String> nameColumn = new TableColumn<>("Name");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
@@ -52,10 +62,10 @@ public class ControllerMain implements Initializable {
         tableView.setItems(products);
     }
 
-
     @FXML
     private void refreshData() {
         ProductData.getInstance().refreshData();
+        populateTableValues();
         alert("Data Refreshed", "Data has been refreshed successfully!");
     }
     @FXML
