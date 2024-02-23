@@ -22,7 +22,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class ControllerMain implements Initializable {
     @FXML
@@ -31,18 +33,30 @@ public class ControllerMain implements Initializable {
     @FXML
     private ChoiceBox<String> searchChoiceBox;
 
-    private String[] options = {"ID", "Name", "Brand", "Type"};
+    private final String[] OPTIONS = {"ID", "Name", "Brand", "Type"};
 
     @FXML
     private TextField searchTextField;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        searchChoiceBox.getItems().addAll(options);
+        //ChoiceBox init
+        searchChoiceBox.getItems().addAll(OPTIONS);
         searchChoiceBox.setValue("ID");
+
+        //SearchBar eventlistener
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            updateTableView();
+        });
+        //ChoiceBox eventListener
+        searchChoiceBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            updateTableView();
+        });
+
         populateTableValues();
     }
 
+    @SuppressWarnings("unchecked")
     @FXML
     private void populateTableValues() {
         // Clear TableView
@@ -80,36 +94,34 @@ public class ControllerMain implements Initializable {
         tableView.setItems(products);
     }
 
-//    @FXML
-//    private void updateTableView() {
-//        String searchQuery = searchTextField.getText().toLowerCase(); // Get search query from search bar input
-//        String selectedOption = searchChoiceBox.getValue(); // Get selected search option from choice box
-//
-//        // Filter the data in your TableView based on the search query and selected search option
-//        ObservableList<Product> filteredData = ProductData.getInstance().getCurrentList().filtered(product -> {
-//            // Convert product details to lowercase for case-insensitive search
-//            String fieldValue = "";
-//            switch (selectedOption) {
-//                case "ID":
-//                    fieldValue = String.valueOf(product.getProductID());
-//                    break;
-//                case "Name":
-//                    fieldValue = product.getProductName().toLowerCase();
-//                    break;
-//                case "Brand":
-//                    fieldValue = product.getProductBrand().toLowerCase();
-//                    break;
-//                case "Type":
-//                    fieldValue = product.getProductType().toLowerCase();
-//                    break;
-//            }
-//            return fieldValue.contains(searchQuery);
-//        });
-//
-//        // Update the display of your TableView with the filtered data
-//        tableView.setItems(filteredData);
-//
-//    }
+    @FXML
+    private void updateTableView() {
+        String searchQuery = searchTextField.getText().toLowerCase(); // Get search query from search bar input
+        String selectedOption = searchChoiceBox.getValue(); // Get selected search option from choice box
+
+        // Filter the data in your TableView based on the search query and selected search option
+        ArrayList<Product> currentList = ProductData.getInstance().getCurrentList();
+        List<Product> filteredList = currentList.stream()
+                .filter(product -> {
+                    // Convert product details to lowercase for case-insensitive search
+                    String fieldValue
+                            = switch (selectedOption) {
+                        case "ID" -> String.valueOf(product.getProductID());
+                        case "Name" -> product.getProductName().toLowerCase();
+                        case "Brand" -> product.getProductBrand().toLowerCase();
+                        case "Type" -> product.getProductType().toLowerCase();
+                        default -> "";
+                    };
+                    return fieldValue.contains(searchQuery);
+                }).collect(Collectors.toList());
+
+        // Convert the List to an ObservableList
+        ObservableList<Product> filteredData = FXCollections.observableArrayList(filteredList);
+
+        // Update the display of your TableView with the filtered data
+        tableView.setItems(filteredData);
+
+    }
 
     @FXML
     private void refreshData() {
