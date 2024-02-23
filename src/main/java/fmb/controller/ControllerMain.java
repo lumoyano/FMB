@@ -129,10 +129,23 @@ public class ControllerMain implements Initializable {
         populateTableValues();
         ErrorTool.showAlert("Data Refreshed", "Data has been refreshed and table repopulated");
     }
-    // TODO: 2/21/2024
+
     @FXML
     private void newRow() {
-        ProductData.getInstance().addProduct(new Product(123,"Brand","Name",new ArrayList<String>(),"type" ));
+        try {
+            //load popup view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/NewRowPopUp.fxml"));
+            Parent root = loader.load();
+            //set respective controller
+            NewRowController controller = loader.getController();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Create new entry");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     // TODO: 2/21/2024
     @FXML
@@ -155,6 +168,7 @@ public class ControllerMain implements Initializable {
             ConnectionPopUpController controller = loader.getController();
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Connection setup");
             stage.setScene(new Scene(root));
             //Setup to close popup by using stage.close within alert. See ShowAlertAndClose
             controller.setStage(stage);
