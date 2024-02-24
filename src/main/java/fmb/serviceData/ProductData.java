@@ -85,26 +85,46 @@ public class ProductData {
         }
     }
 
-    public void addProduct(Product product) { //Unfinished method
-        try (Connection db = DriverManager
-                .getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
-            PreparedStatement statement = db.prepareStatement("INSERT INTO products (productid, productname, producttype, productbrand,ingredients) VALUES (?, ?, ?, ?, ?)")){
+    public int getNextID() {
+        try (Connection db = DriverManager.getConnection(DBConfig.getDatabaseUrl(), DBConfig.getDBUsername(), DBConfig.getDBPassword());
+             PreparedStatement statement = db.prepareStatement("SELECT MAX(productid) AS max_id FROM product");
+             ResultSet resultSet = statement.executeQuery()) {
+
+            if (resultSet.next()) {
+                int maxId = resultSet.getInt("max_id");
+                return maxId + 1; // Increment the max ID to get the next available ID
+            } else {
+                return 1; // If no records found, start from 1
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1; // Error occurred, return -1 as indication
+        }
+    }
+
+    public void addProduct(Product product) {
+        try (Connection db = DriverManager.getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
+             PreparedStatement statement = db.prepareStatement("INSERT INTO product (productid, productname, producttype, productbrand, ingredients) VALUES (?, ?, ?, ?, ?)")) {
 
             statement.setInt(1, product.getProductID());
             statement.setString(2, product.getProductName());
             statement.setString(3, product.getProductType());
-            // Assuming ingredients is a String array, you need to convert it to a string representation
             statement.setString(4, product.getProductBrand());
-            ArrayList<String> ingredientsString = product.getIngredients();
-            statement.setString(5, String.valueOf(ingredientsString));
 
-            System.out.println(statement);
+            // Convert ingredients ArrayList to a single string with comma-separated values
+            String ingredientsString = String.join(", ", product.getIngredients());
+            statement.setString(5, ingredientsString);
 
-//            statement.executeUpdate();
+            // Execute the SQL statement
+            int rowsAffected = statement.executeUpdate();
+            System.out.println(rowsAffected + " row(s) inserted.");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     public void updateProduct(Product product) {
         try (Connection db = DriverManager.getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
