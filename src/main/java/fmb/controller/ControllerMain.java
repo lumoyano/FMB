@@ -153,7 +153,7 @@ public class ControllerMain implements Initializable {
     private void editRow() {
         ProductData.getInstance().updateProduct(new Product(123,"DifferentBrand","DifferentName",new ArrayList<String>(),"differenttype" ));
     }
-    // TODO: 2/21/2024
+
     @FXML
     private void deleteRow() {
         // Get the selected item from the TableView
