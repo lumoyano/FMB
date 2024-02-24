@@ -1,9 +1,13 @@
 package fmb.controller;
 
 import fmb.model.Product;
+import fmb.serviceData.ProductData;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class NewRowController {
 
@@ -21,6 +25,13 @@ public class NewRowController {
 
     @FXML
     public void saveChanges() {
-        Product newRow = new Product()
+        String[] individualIngs = ingredientsArea.getText().split("\\s*,\\s*");
+        ArrayList<String> ingredients = new ArrayList<>(Arrays.asList(individualIngs));
+        Product newRow = new Product(ProductData.getInstance().getNextID(),
+                productBrandField.getText(),
+                productNameField.getText(),
+                ingredients,
+                productTypeField.getText());
+        ProductData.getInstance().addProduct(newRow);
     }
 }
