@@ -142,6 +142,7 @@ public class ControllerMain implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Create new entry");
             stage.setScene(new Scene(root));
+            controller.setStage(stage);
             stage.showAndWait();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -155,7 +156,14 @@ public class ControllerMain implements Initializable {
     // TODO: 2/21/2024
     @FXML
     private void deleteRow() {
-        ProductData.getInstance().deleteProduct(1);
+        // Get the selected item from the TableView
+        Product selectedProduct = tableView.getSelectionModel().getSelectedItem();
+
+        // Check if an item is selected
+        if (selectedProduct != null) {
+            ProductData.getInstance().deleteProduct(selectedProduct.getProductID());
+        }
+        ErrorTool.showAlert("Delete Row", "This row was deleted. Please refresh to reflect changes");
     }
 
     @FXML
