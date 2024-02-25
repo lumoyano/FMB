@@ -8,6 +8,7 @@ import fmb.tools.ErrorTool;
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ProductData {
     private static ArrayList<Product> currentList = new ArrayList<>();
@@ -56,7 +57,7 @@ public class ProductData {
         try (Connection db = DriverManager.getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
              Statement st = db.createStatement()) {
 
-            ResultSet resultSet = st.executeQuery("SELECT * FROM PRODUCT");
+            ResultSet resultSet = st.executeQuery("SELECT * FROM PRODUCTS");
             while (resultSet.next()) {
                 //get all fields
                 int productID = resultSet.getInt("productid");
@@ -67,17 +68,11 @@ public class ProductData {
                 System.out.println(productType);
                 String productBrand = resultSet.getString("productbrand");
                 System.out.println(productBrand);
-                String[] ingredientsArray = new String[]{resultSet.getString("ingredients")};
-                System.out.println(ingredientsArray.toString());
-                //Parse ingredients into an arraylist
-                ArrayList<String> ingredients = new ArrayList<>(); //this is the item used for product constructor
-                for (String s :
-                        ingredientsArray) {
-                    ingredients.add(s.trim());
-                }
-                System.out.println(ingredients);
+                String ingredientsString = resultSet.getString("ingredients");
+                ArrayList<String> ingredients = new ArrayList<>(Arrays.asList(ingredientsString.split(", ")));
+                System.out.println(ingredients.toString());
                 //create new product with all fields
-                Product currentRow = new Product(productID, productBrand, productName, ingredients, productType);
+                Product currentRow = new Product(productID, productBrand, productName, productType, ingredients);
                 currentList.add(currentRow);
             }
         } catch (SQLException e) {
@@ -87,7 +82,7 @@ public class ProductData {
 
     public int getNextID() {
         try (Connection db = DriverManager.getConnection(DBConfig.getDatabaseUrl(), DBConfig.getDBUsername(), DBConfig.getDBPassword());
-             PreparedStatement statement = db.prepareStatement("SELECT MAX(productid) AS max_id FROM product");
+             PreparedStatement statement = db.prepareStatement("SELECT MAX(productid) AS max_id FROM products");
              ResultSet resultSet = statement.executeQuery()) {
 
             if (resultSet.next()) {
@@ -105,7 +100,7 @@ public class ProductData {
 
     public void addProduct(Product product) {
         try (Connection db = DriverManager.getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
-             PreparedStatement statement = db.prepareStatement("INSERT INTO product (productid, productname, producttype, productbrand, ingredients) VALUES (?, ?, ?, ?, ?)")) {
+             PreparedStatement statement = db.prepareStatement("INSERT INTO products (productid, productname, producttype, productbrand, ingredients) VALUES (?, ?, ?, ?, ?)")) {
 
             statement.setInt(1, product.getProductID());
             statement.setString(2, product.getProductName());
@@ -113,8 +108,7 @@ public class ProductData {
             statement.setString(4, product.getProductBrand());
 
             // Convert ingredients ArrayList to a single string with comma-separated values
-            String ingredientsString = String.join(", ", product.getIngredients());
-            statement.setString(5, ingredientsString);
+            statement.setString(5, product.getIngredientsAsString());
 
             // Execute the SQL statement
             int rowsAffected = statement.executeUpdate();
@@ -125,22 +119,22 @@ public class ProductData {
         }
     }
 
-
     public void updateProduct(Product product) {
         try (Connection db = DriverManager.getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
-             PreparedStatement statement = db.prepareStatement("UPDATE products SET productname = ?, producttype = ?, productbrand = ?, ingredients = ? WHERE productid = ?")) {
+                 PreparedStatement statement = db.prepareStatement("UPDATE products SET productname=?, producttype=?, productbrand=?, ingredients=? WHERE productid=?")) {
 
             statement.setString(1, product.getProductName());
             statement.setString(2, product.getProductType());
             statement.setString(3, product.getProductBrand());
-            // Assuming ingredients is a String array, you need to convert it to a string representation
-            ArrayList<String> ingredientsString = product.getIngredients();
-            statement.setString(4, String.valueOf(ingredientsString));
+            statement.setString(4, product.getIngredientsAsString());
             statement.setInt(5, product.getProductID());
 
-            System.out.println(statement);
-
-           // statement.executeUpdate();
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Product updated successfully.");
+            } else {
+                System.out.println("Failed to update product.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -149,7 +143,7 @@ public class ProductData {
     public void deleteProduct(int productId) {
         try (Connection db = DriverManager
                     .getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
-            PreparedStatement statement = db.prepareStatement("DELETE FROM product WHERE product.productid = ?")) {
+            PreparedStatement statement = db.prepareStatement("DELETE FROM products WHERE product.productid = ?")) {
 
             statement.setInt(1, productId);
             statement.executeUpdate();
