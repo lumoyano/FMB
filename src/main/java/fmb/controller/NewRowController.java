@@ -48,8 +48,8 @@ public class NewRowController {
         Product newRow = new Product(ProductData.getInstance().getNextID(),
                 productBrandField.getText(),
                 productNameField.getText(),
-                ingredients,
-                productTypeField.getText());
+                productTypeField.getText(),
+                ingredients);
         try{
             ProductData.getInstance().addProduct(newRow);
             ErrorTool.showAlertAndClose("New Row added",
