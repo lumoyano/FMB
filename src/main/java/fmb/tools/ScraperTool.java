@@ -11,20 +11,19 @@ import java.util.ArrayList;
 
 public class ScraperTool {
 
-    /*public static void main(String[] args) throws IOException {
-        String test = getSoup("https://incidecoder.com/products/mac-lipglass");
-    }*/
-
-    public static String getSoup(String link) throws IOException {
-        Document doc = Jsoup.connect(link).get();
-        Element container = doc.getElementById("showmore-section-ingredlist-short");
-        Elements hrefs = container.getElementsByClass("ingred-link");
-        ArrayList<String> listItems = new ArrayList<>();
-        for (Element e :
-                hrefs) {
-            listItems.add(e.text());
+    public static ArrayList<String> getSoup(String link) throws IOException {
+        try {
+            Document doc = Jsoup.connect(link).get();
+            Element container = doc.getElementById("showmore-section-ingredlist-short");
+            Elements hrefs = container.getElementsByClass("ingred-link");
+            ArrayList<String> listItems = new ArrayList<>();
+            for (Element e :
+                    hrefs) {
+                listItems.add(e.text());
+            }
+            return listItems;
+        } catch (Exception e) {
+            return new ArrayList<>();
         }
-        System.out.println(listItems);
-        return listItems.toString();
     }
 }
