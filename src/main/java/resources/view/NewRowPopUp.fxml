@@ -53,7 +53,7 @@
                   <Button mnemonicParsing="false" onAction="#saveChanges" text="Save Changes" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                   <ButtonBar maxWidth="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="300.0" GridPane.halignment="RIGHT">
                     <buttons>
-                      <Button mnemonicParsing="false" text="Enter from link" />
+                      <Button mnemonicParsing="false" onAction="#openScrapeView" text="Enter from link" />
                     </buttons>
                   </ButtonBar>
                </children>
