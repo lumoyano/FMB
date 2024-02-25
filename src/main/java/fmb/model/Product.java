@@ -1,6 +1,7 @@
 package fmb.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Product {
     private int productID;
@@ -9,12 +10,12 @@ public class Product {
     private ArrayList<String> ingredients;
     private String productType;
 
-    public Product(int productID, String productBrand, String productName, ArrayList<String> ingredients, String productType) {
+    public Product(int productID, String productBrand, String productName, String productType, ArrayList<String> ingredients) {
         this.productID = productID;
         this.productBrand = productBrand;
         this.productName = productName;
-        this.ingredients = ingredients;
         this.productType = productType;
+        this.ingredients = ingredients;
     }
 
     public Product() {
@@ -22,6 +23,17 @@ public class Product {
 
     public int getProductID() {
         return productID;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productID=" + productID +
+                ", productBrand='" + productBrand + '\'' +
+                ", productName='" + productName + '\'' +
+                ", ingredients=" + ingredients +
+                ", productType='" + productType + '\'' +
+                '}';
     }
 
     public void setProductID(int productID) {
@@ -56,7 +68,15 @@ public class Product {
         return ingredients;
     }
 
+    public String getIngredientsAsString() {
+        return String.join(", ", ingredients);
+    }
+
     public void setIngredients(ArrayList<String> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public void setIngredientsFromString (String ingredientsString ) {
+        this.ingredients = new ArrayList<>(Arrays.asList(ingredientsString.split(", ")));
     }
 }
