@@ -23,6 +23,10 @@ public class ConnectionPopUpController {
 
     @FXML
     public void save () {
+        if (urlField.getText().isEmpty() ||
+        usernameField.getText().isEmpty() ||
+        passwdField.getText().isEmpty())
+            ErrorTool.showAlert("Error", "One or more fields are empty. Please make sure all fields are filled and try again.");
         try {
             DBConfig.setProperties(
                     urlField.getText(),
