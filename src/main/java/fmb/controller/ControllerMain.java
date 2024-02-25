@@ -38,6 +38,8 @@ public class ControllerMain implements Initializable {
     @FXML
     private TextField searchTextField;
 
+    private static Product currentRow;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //ChoiceBox init
@@ -51,6 +53,12 @@ public class ControllerMain implements Initializable {
         //ChoiceBox eventListener
         searchChoiceBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             updateTableView();
+        });
+
+        //Selected product listener
+        tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection !=null)
+                currentRow = newSelection;
         });
 
         populateTableValues();
@@ -84,7 +92,7 @@ public class ControllerMain implements Initializable {
         ingredientsColumn.setCellValueFactory(new PropertyValueFactory<>("ingredients"));
         idColumn.setId("Ingredients");
 
-        tableView.getColumns().addAll(idColumn, nameColumn, brandColumn, typeColumn,ingredientsColumn);
+        tableView.getColumns().addAll(idColumn, nameColumn, brandColumn, typeColumn, ingredientsColumn);
 
         // Populate TableView with data
         ArrayList<Product> instance = ProductData.getInstance().getCurrentList();
@@ -148,16 +156,35 @@ public class ControllerMain implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
+    public static Product getCurrentRow() {
+        return currentRow;
+    }
+
     // TODO: 2/21/2024
     @FXML
     private void editRow() {
-        ProductData.getInstance().updateProduct(new Product(123,"DifferentBrand","DifferentName",new ArrayList<String>(),"differenttype" ));
+        if (currentRow == null) return;
+
+        try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../../resources/view/EditRowPopUp.fxml"));
+                Parent root = loader.load();
+                EditRowController controller = loader.getController();
+                Stage stage = new Stage();
+                controller.setStage(stage);
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setTitle("Edit Entry");
+                stage.setScene(new Scene(root));
+                stage.showAndWait();
+                } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
     private void deleteRow() {
         // Get the selected item from the TableView
-        Product selectedProduct = tableView.getSelectionModel().getSelectedItem();
+        Product selectedProduct = currentRow;
 
         // Check if an item is selected
         if (selectedProduct != null) {
