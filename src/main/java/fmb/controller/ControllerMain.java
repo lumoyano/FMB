@@ -33,7 +33,7 @@ public class ControllerMain implements Initializable {
     @FXML
     private ChoiceBox<String> searchChoiceBox;
 
-    private final String[] OPTIONS = {"ID", "Name", "Brand", "Type"};
+    private final String[] OPTIONS = {"ID", "Name", "Brand"};
 
     @FXML
     private TextField searchTextField;
@@ -78,21 +78,27 @@ public class ControllerMain implements Initializable {
 
         TableColumn<Product, String> nameColumn = new TableColumn<>("Name");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
-        idColumn.setId("Name");
+        nameColumn.setId("Name");
 
         TableColumn<Product, String> brandColumn = new TableColumn<>("Brand");
         brandColumn.setCellValueFactory(new PropertyValueFactory<>("productBrand"));
-        idColumn.setId("Brand");
+        brandColumn.setId("Brand");
 
-        TableColumn<Product, String> typeColumn = new TableColumn<>("Type");
+        TableColumn<Product, Integer> typeColumn = new TableColumn<>("Type");
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("productType"));
-        idColumn.setId("Type");
+        typeColumn.setPrefWidth(25);
+        typeColumn.setId("Type");
+
+        TableColumn<Product, Integer> categoryColumn = new TableColumn<>("Category");
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("producCategory"));
+        categoryColumn.setPrefWidth(25);
+        categoryColumn.setId("Category");
 
         TableColumn<Product, String[]> ingredientsColumn = new TableColumn<>("Ingredients");
         ingredientsColumn.setCellValueFactory(new PropertyValueFactory<>("ingredients"));
-        idColumn.setId("Ingredients");
+        ingredientsColumn.setId("Ingredients");
 
-        tableView.getColumns().addAll(idColumn, nameColumn, brandColumn, typeColumn, ingredientsColumn);
+        tableView.getColumns().addAll(idColumn, nameColumn, brandColumn, typeColumn, categoryColumn, ingredientsColumn);
 
         // Populate TableView with data
         ArrayList<Product> instance = ProductData.getInstance().getCurrentList();
@@ -117,7 +123,6 @@ public class ControllerMain implements Initializable {
                         case "ID" -> String.valueOf(product.getProductID());
                         case "Name" -> product.getProductName().toLowerCase();
                         case "Brand" -> product.getProductBrand().toLowerCase();
-                        case "Type" -> product.getProductType().toLowerCase();
                         default -> "";
                     };
                     return fieldValue.contains(searchQuery);

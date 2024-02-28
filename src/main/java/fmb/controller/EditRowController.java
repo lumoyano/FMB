@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -29,7 +30,10 @@ public class EditRowController implements Initializable {
     private TextField productBrandField;
 
     @FXML
-    private TextField productTypeField;
+    private ChoiceBox<String> productTypeChoiceBox;
+
+    @FXML
+    private ChoiceBox<String> productCategoryChoiceBox;
 
     @FXML
     private TextArea ingredientsArea;

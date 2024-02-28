@@ -3,15 +3,21 @@ package fmb.controller;
 import fmb.model.Product;
 import fmb.serviceData.ProductData;
 import fmb.tools.ErrorTool;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.ResourceBundle;
 
-public class NewRowController {
+public class NewRowController implements Initializable {
 
     @FXML
     private TextField productNameField;
@@ -20,13 +26,30 @@ public class NewRowController {
     private TextField productBrandField;
 
     @FXML
-    private TextField productTypeField;
+    private ChoiceBox<String> productCategoryChoiceBox;
+
+    private String[] categoryOptions;
+
+    @FXML
+    private ChoiceBox<String> productTypeChoiceBox;
+
+    private String[] typeOptions;
 
     @FXML
     private TextArea ingredientsArea;
 
     @FXML
     private Stage stage;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        populateChoiceBox();
+    }
+
+    @FXML
+    private void populateChoiceBox() {
+
+    }
 
     @FXML
     public void saveChanges() {
@@ -38,17 +61,20 @@ public class NewRowController {
             ErrorTool.showAlertAndClose("Error", "There was an error creating your entry: Next available ID returned -1", stage);
             return;
         }
-        if (productBrandField.getText().isEmpty() ||
-                productNameField.getText().isEmpty() ||
+        //TODO
+        if (productNameField.getText().isEmpty() ||
+                productBrandField.getText().isEmpty() ||
                 productTypeField.getText().isEmpty() ||
+                productBrandField.getText().isEmpty() ||
                 ingredientsArea.getText().isEmpty()){
             ErrorTool.showAlert("Error", "There was an error creating your entry. Please make sure all fields are filled.");
             return;
         }
         Product newRow = new Product(ProductData.getInstance().getNextID(),
-                productBrandField.getText(),
                 productNameField.getText(),
+                productBrandField.getText(),
                 productTypeField.getText(),
+                //TODO
                 ingredients);
         try{
             ProductData.getInstance().addProduct(newRow);
@@ -63,5 +89,8 @@ public class NewRowController {
     @FXML
     public void setStage(Stage s) {
         this.stage = s;
+    }
+
+    public void openScrapeView(ActionEvent actionEvent) {
     }
 }
