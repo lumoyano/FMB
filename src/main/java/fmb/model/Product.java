@@ -5,17 +5,27 @@ import java.util.Arrays;
 
 public class Product {
     private int productID;
-    private String productBrand;
     private String productName;
+    private String productBrand;
+    private int productType;
+    private int productCategory;
     private ArrayList<String> ingredients;
-    private String productType;
 
-    public Product(int productID, String productBrand, String productName, String productType, ArrayList<String> ingredients) {
+    public Product(int productID, String productName, String productBrand, int productType, int productCategory,  ArrayList<String> ingredients) {
         this.productID = productID;
         this.productBrand = productBrand;
         this.productName = productName;
         this.productType = productType;
+        this.productCategory = productCategory;
         this.ingredients = ingredients;
+    }
+
+    public int getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(int productCategory) {
+        this.productCategory = productCategory;
     }
 
     public Product() {
@@ -56,11 +66,11 @@ public class Product {
         this.productBrand = productBrand;
     }
 
-    public String getProductType() {
+    public int getProductType() {
         return productType;
     }
 
-    public void setProductType(String productType) {
+    public void setProductType(int productType) {
         this.productType = productType;
     }
 
