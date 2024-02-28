@@ -1,11 +1,9 @@
 package fmb.serviceData;
 
-import fmb.controller.ControllerMain;
 import fmb.model.Product;
 import fmb.tools.DBConfig;
 import fmb.tools.ErrorTool;
 
-import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,7 +36,7 @@ public class ProductData {
         loadDataFromDB();
     }
 
-    public void refreshProperties() {
+    private void refreshProperties() {
         URL = DBConfig.getDatabaseUrl(); //jdbc:postgresql://server:port5432/defaultdatabase
         USERNAME = DBConfig.getDBUsername();
         PASSWORD = DBConfig.getDBPassword();
@@ -61,18 +59,15 @@ public class ProductData {
             while (resultSet.next()) {
                 //get all fields
                 int productID = resultSet.getInt("productid");
-                System.out.println(productID);
                 String productName = resultSet.getString("productname");
-                System.out.println(productName);
-                String productType = resultSet.getString("producttype");
-                System.out.println(productType);
                 String productBrand = resultSet.getString("productbrand");
-                System.out.println(productBrand);
+                int productType = resultSet.getInt("producttype");
+                int productCategory = resultSet.getInt("productcategory");
                 String ingredientsString = resultSet.getString("ingredients");
+                //convert string to arraylist
                 ArrayList<String> ingredients = new ArrayList<>(Arrays.asList(ingredientsString.split(", ")));
-                System.out.println(ingredients.toString());
                 //create new product with all fields
-                Product currentRow = new Product(productID, productBrand, productName, productType, ingredients);
+                Product currentRow = new Product(productID, productName, productBrand, productType, productCategory, ingredients);
                 currentList.add(currentRow);
             }
         } catch (SQLException e) {
@@ -100,15 +95,17 @@ public class ProductData {
 
     public void addProduct(Product product) {
         try (Connection db = DriverManager.getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
-             PreparedStatement statement = db.prepareStatement("INSERT INTO products (productid, productname, producttype, productbrand, ingredients) VALUES (?, ?, ?, ?, ?)")) {
+             PreparedStatement statement = db.prepareStatement("INSERT INTO products (productid, productname, " +
+                     "productbrand, producttype, productcategory, ingredients) VALUES (?, ?, ?, ?, ?, ?)")) {
 
             statement.setInt(1, product.getProductID());
             statement.setString(2, product.getProductName());
-            statement.setString(3, product.getProductType());
-            statement.setString(4, product.getProductBrand());
+            statement.setString(3, product.getProductBrand());
+            statement.setInt(4, product.getProductType());
+            statement.setInt(5, product.getProductCategory());
 
             // Convert ingredients ArrayList to a single string with comma-separated values
-            statement.setString(5, product.getIngredientsAsString());
+            statement.setString(6, product.getIngredientsAsString());
 
             // Execute the SQL statement
             int rowsAffected = statement.executeUpdate();
@@ -121,13 +118,15 @@ public class ProductData {
 
     public void updateProduct(Product product) {
         try (Connection db = DriverManager.getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
-                 PreparedStatement statement = db.prepareStatement("UPDATE products SET productname=?, producttype=?, productbrand=?, ingredients=? WHERE productid=?")) {
+                 PreparedStatement statement = db.prepareStatement("UPDATE products SET productname=?, productbrand=?, " +
+                         "producttype=?, productcategory=?, ingredients=? WHERE productid=?")) {
 
             statement.setString(1, product.getProductName());
-            statement.setString(2, product.getProductType());
-            statement.setString(3, product.getProductBrand());
-            statement.setString(4, product.getIngredientsAsString());
-            statement.setInt(5, product.getProductID());
+            statement.setString(2, product.getProductBrand());
+            statement.setInt(3, product.getProductType());
+            statement.setInt(4, product.getProductCategory());
+            statement.setString(5, product.getIngredientsAsString());
+            statement.setInt(6, product.getProductID());
 
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {
