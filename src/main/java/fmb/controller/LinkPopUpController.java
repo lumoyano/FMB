@@ -24,7 +24,7 @@ public class LinkPopUpController implements Initializable {
     @FXML
     private TextArea outputTextArea;
 
-    private ArrayList<String> expectedIngredients = new ArrayList<String>();
+    private ArrayList<String> expectedIngredients = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
