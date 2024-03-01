@@ -142,7 +142,7 @@ public class ProductData {
     public void deleteProduct(int productId) {
         try (Connection db = DriverManager
                     .getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
-            PreparedStatement statement = db.prepareStatement("DELETE FROM products WHERE product.productid = ?")) {
+            PreparedStatement statement = db.prepareStatement("DELETE FROM products WHERE productid = ?")) {
 
             statement.setInt(1, productId);
             statement.executeUpdate();

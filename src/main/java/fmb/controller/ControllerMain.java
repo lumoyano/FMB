@@ -97,6 +97,7 @@ public class ControllerMain implements Initializable {
         TableColumn<Product, String[]> ingredientsColumn = new TableColumn<>("Ingredients");
         ingredientsColumn.setCellValueFactory(new PropertyValueFactory<>("ingredients"));
         ingredientsColumn.setId("Ingredients");
+        ingredientsColumn.setPrefWidth(250);
 
         tableView.getColumns().addAll(idColumn, nameColumn, brandColumn, typeColumn, categoryColumn, ingredientsColumn);
 
@@ -166,7 +167,6 @@ public class ControllerMain implements Initializable {
         return currentRow;
     }
 
-    // TODO: 2/21/2024
     @FXML
     private void editRow() {
         if (currentRow == null) return;

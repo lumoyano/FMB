@@ -17,7 +17,7 @@ public class UI extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        stage.setTitle("FMBrand");
+        stage.setTitle("FMB - DB Manager");
         stage.setScene(new Scene(root, 900, 700));
         stage.show();
     }

@@ -57,19 +57,20 @@ public class NewRowController implements Initializable {
         populateFields();
 
         productCategoryChoiceBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (oldValue.equals(newValue)) return;
-            typeOptions.clear();
-            productTypeChoiceBox.setValue("");
-            String[] parts = newValue.split(",");
-            int id = Integer.parseInt(parts[0]);
-            ArrayList<PType> types = TypeData.getInstance().getTypesByCategory(id);
-            for (PType p :
-                    types) {
-                typeOptions.add(p.getTypeID() + ", " +p.getTypeName());
+            if (oldValue == newValue) return;
+            if (newValue != null && newValue.contains(",")) {
+                typeOptions.clear();
+                productTypeChoiceBox.setValue("");
+                String[] parts = newValue.split(",");
+                int id = Integer.parseInt(parts[0]);
+                ArrayList<PType> types = TypeData.getInstance().getTypesByCategory(id);
+                for (PType p :
+                        types) {
+                    typeOptions.add(p.getTypeID() + ", " +p.getTypeName());
+                }
+                productTypeChoiceBox.getItems().clear();
+                productTypeChoiceBox.getItems().addAll(typeOptions);
             }
-
-            productTypeChoiceBox.getItems().clear();
-            productTypeChoiceBox.getItems().addAll(typeOptions);
         });
     }
 
@@ -157,6 +158,8 @@ public class NewRowController implements Initializable {
     private void populateFields() {
         productCategoryChoiceBox.getItems().clear();
         productCategoryChoiceBox.getItems().addAll(categoryOptions);
+        productCategoryChoiceBox.setValue("");
+        productTypeChoiceBox.setValue("");
 
         // Populate text area with ingredients from link if present
         StringBuilder ingredientsText = new StringBuilder();

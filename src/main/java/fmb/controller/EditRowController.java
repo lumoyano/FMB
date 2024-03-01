@@ -58,19 +58,21 @@ public class EditRowController implements Initializable {
         populateFields();
 
         productCategoryChoiceBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (oldValue.equals(newValue)) return;
+            if (oldValue == newValue) return;
             typeOptions.clear();
             productTypeChoiceBox.setValue("");
-            String[] parts = newValue.split(",");
-            int id = Integer.parseInt(parts[0]);
-            ArrayList<PType> types = TypeData.getInstance().getTypesByCategory(id);
-            for (PType p :
-                    types) {
-                typeOptions.add(p.getTypeID() + ", " +p.getTypeName());
+            if (newValue != null) {
+                String[] parts = newValue.split(",");
+                int id = Integer.parseInt(parts[0]);
+                ArrayList<PType> types = TypeData.getInstance().getTypesByCategory(id);
+                for (PType p :
+                        types) {
+                    typeOptions.add(p.getTypeID() + ", " +p.getTypeName());
+                }
+                productTypeChoiceBox.getItems().clear();
+                productTypeChoiceBox.getItems().addAll(typeOptions);
             }
 
-            productTypeChoiceBox.getItems().clear();
-            productTypeChoiceBox.getItems().addAll(typeOptions);
         });
     }
 
