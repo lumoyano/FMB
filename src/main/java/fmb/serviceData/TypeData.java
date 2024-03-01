@@ -67,4 +67,23 @@ public class TypeData {
             ErrorTool.showAlert("DATABASE ERROR", "Properties file error: connection expected different url OR username OR password");
         }
     }
+
+    public ArrayList<PType> getTypesByCategory(int queryID) {
+        ArrayList<PType> matchedTypes = new ArrayList<>();
+        for (PType p :
+                currentList) {
+            if (p.getCategoryID() == queryID)
+                matchedTypes.add(p);
+        }
+        return matchedTypes;
+    }
+
+    public PType getTypeByID(int id) {
+        for (PType p :
+                currentList) {
+            if (p.getTypeID() == id)
+                return p;
+        }
+        return null;
+    }
 }

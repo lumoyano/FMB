@@ -1,6 +1,7 @@
 package fmb.serviceData;
 
 import fmb.model.PCategory;
+import fmb.model.PType;
 import fmb.model.Product;
 import fmb.tools.DBConfig;
 import fmb.tools.ErrorTool;
@@ -67,5 +68,14 @@ public class CategoryData {
         } catch (SQLException e) {
             ErrorTool.showAlert("DATABASE ERROR", "Properties file error: connection expected different url OR username OR password");
         }
+    }
+
+    public PCategory getCategoryByID (int queryID) {
+        for ( PCategory p :
+                currentList) {
+            if (p.getCategoryID() == queryID)
+                return p;
+        }
+        return null;
     }
 }

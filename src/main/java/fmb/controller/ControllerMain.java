@@ -90,7 +90,7 @@ public class ControllerMain implements Initializable {
         typeColumn.setId("Type");
 
         TableColumn<Product, Integer> categoryColumn = new TableColumn<>("Category");
-        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("producCategory"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("productCategory"));
         categoryColumn.setPrefWidth(25);
         categoryColumn.setId("Category");
 
