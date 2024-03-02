@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>FMB</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>FMBDBManager</artifactId>
+    <version>1.0.0</version>
     <build>
         <plugins>
             <plugin>
