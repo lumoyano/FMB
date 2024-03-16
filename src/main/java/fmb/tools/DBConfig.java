@@ -20,14 +20,13 @@ public class DBConfig {
 
     # ElephantSQL provides a link that is both incorrect and misspelled, Use this as a rule
     */
-    private static final String CONFIG_FILE_PATH = "src/main/java/resources/productData.properties";
+    private static final String CONFIG_FILE_PATH = "resources/productData.properties";
 
     private static Properties properties;
 
     static {
         properties = new Properties();
-        try {
-            FileInputStream input = new FileInputStream(CONFIG_FILE_PATH);
+        try (FileInputStream input = new FileInputStream(CONFIG_FILE_PATH);){
             properties.load(input);
         } catch (IOException e) {
             e.printStackTrace();
