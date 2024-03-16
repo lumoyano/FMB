@@ -43,3 +43,4 @@ pom.xml
 /src/main/java/resources/productData.properties
 *.properties
 .idea/misc.xml
+*.jar
