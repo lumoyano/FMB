@@ -102,7 +102,7 @@ public class ControllerMain implements Initializable {
         tableView.getColumns().addAll(idColumn, nameColumn, brandColumn, typeColumn, categoryColumn, ingredientsColumn);
 
         // Populate TableView with data
-        ArrayList<Product> instance = ProductData.getInstance().getCurrentList();
+        ArrayList<Product> instance = ProductData.getInstance().getAll();
         ObservableList<Product> products = FXCollections.observableArrayList(
                 instance
         );
@@ -115,7 +115,7 @@ public class ControllerMain implements Initializable {
         String selectedOption = searchChoiceBox.getValue(); // Get selected search option from choice box
 
         // Filter the data in your TableView based on the search query and selected search option
-        ArrayList<Product> currentList = ProductData.getInstance().getCurrentList();
+        ArrayList<Product> currentList = ProductData.getInstance().getAll();
         List<Product> filteredList = currentList.stream()
                 .filter(product -> {
                     // Convert product details to lowercase for case-insensitive search
@@ -193,7 +193,7 @@ public class ControllerMain implements Initializable {
 
         // Check if an item is selected
         if (selectedProduct != null) {
-            ProductData.getInstance().deleteProduct(selectedProduct.getProductID());
+            ProductData.getInstance().delete(selectedProduct.getProductID());
         }
         ErrorTool.showAlert("Delete Row", "This row was deleted. Please refresh to reflect changes");
     }
