@@ -1,16 +1,13 @@
 package fmb.serviceData;
 
 import fmb.model.PCategory;
-import fmb.model.PType;
-import fmb.model.Product;
 import fmb.tools.DBConfig;
 import fmb.tools.ErrorTool;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class CategoryData {
+public class CategoryData implements DataAccessObject<PCategory> {
     private ArrayList<PCategory> currentList = new ArrayList<>();
 
     /*
@@ -29,7 +26,9 @@ public class CategoryData {
         return instance;
     }
 
-    public ArrayList<PCategory> getCurrentList() {
+
+    @Override
+    public ArrayList<PCategory> getAll() {
         return currentList;
     }
 
@@ -67,6 +66,76 @@ public class CategoryData {
             }
         } catch (SQLException e) {
             ErrorTool.showAlert("DATABASE ERROR", "Properties file error: connection expected different url OR username OR password");
+        }
+    }
+
+    @Override
+    public int getNextID() {
+        try (Connection db = DriverManager.getConnection(DBConfig.getDatabaseUrl(), DBConfig.getDBUsername(), DBConfig.getDBPassword());
+             PreparedStatement statement = db.prepareStatement("SELECT MAX(categoryid) AS max_id FROM categories");
+             ResultSet resultSet = statement.executeQuery()) {
+
+            if (resultSet.next()) {
+                int maxId = resultSet.getInt("max_id");
+                return maxId + 1; // Increment the max ID to get the next available ID
+            } else {
+                return 1; // If no records found, start from 1
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1; // Error occurred, return -1 as indication
+        }
+    }
+
+    @Override
+    public void add(PCategory category) {
+        try (Connection db = DriverManager.getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
+             PreparedStatement statement = db.prepareStatement("INSERT INTO categories (categoryid, categoryname) " +
+                     "VALUES (?, ?)")) {
+
+            statement.setInt(1, category.getCategoryID());
+            statement.setString(2, category.getCategoryName());
+
+            // Execute the SQL statement
+            int rowsAffected = statement.executeUpdate();
+            System.out.println(rowsAffected + " row(s) inserted.");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void update(PCategory category) {
+        try (Connection db = DriverManager.getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
+             PreparedStatement statement = db.prepareStatement("UPDATE types SET categoryname=?" +
+                     "WHERE categoryid=?")) {
+
+            statement.setString(1, category.getCategoryName());
+            statement.setInt(2, category.getCategoryID());
+
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Product updated successfully.");
+            } else {
+                System.out.println("Failed to update product.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void delete(int id) {
+        try (Connection db = DriverManager
+                .getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
+             PreparedStatement statement = db.prepareStatement("DELETE FROM categories WHERE categoryid = ?")) {
+
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

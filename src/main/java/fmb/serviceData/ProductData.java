@@ -3,12 +3,13 @@ package fmb.serviceData;
 import fmb.model.Product;
 import fmb.tools.DBConfig;
 import fmb.tools.ErrorTool;
+import javafx.fxml.FXML;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ProductData {
+public class ProductData implements DataAccessObject<Product> {
     private static ArrayList<Product> currentList = new ArrayList<>();
 
     /*
@@ -25,10 +26,6 @@ public class ProductData {
 
     public static ProductData getInstance() {
         return instance;
-    }
-
-    public ArrayList<Product> getCurrentList() {
-        return currentList;
     }
 
     public void refreshData() {
@@ -75,6 +72,12 @@ public class ProductData {
         }
     }
 
+    @Override
+    public ArrayList<Product> getAll() {
+        return currentList;
+    }
+
+    @Override
     public int getNextID() {
         try (Connection db = DriverManager.getConnection(DBConfig.getDatabaseUrl(), DBConfig.getDBUsername(), DBConfig.getDBPassword());
              PreparedStatement statement = db.prepareStatement("SELECT MAX(productid) AS max_id FROM products");
@@ -93,7 +96,8 @@ public class ProductData {
         }
     }
 
-    public void addProduct(Product product) {
+    @Override
+    public void add(Product product) {
         try (Connection db = DriverManager.getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
              PreparedStatement statement = db.prepareStatement("INSERT INTO products (productid, productname, " +
                      "productbrand, producttype, productcategory, ingredients) VALUES (?, ?, ?, ?, ?, ?)")) {
@@ -116,7 +120,8 @@ public class ProductData {
         }
     }
 
-    public void updateProduct(Product product) {
+    @Override
+    public void update(Product product) {
         try (Connection db = DriverManager.getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
                  PreparedStatement statement = db.prepareStatement("UPDATE products SET productname=?, productbrand=?, " +
                          "producttype=?, productcategory=?, ingredients=? WHERE productid=?")) {
@@ -139,7 +144,8 @@ public class ProductData {
         }
     }
 
-    public void deleteProduct(int productId) {
+    @Override
+    public void delete(int productId) {
         try (Connection db = DriverManager
                     .getConnection(getInstance().URL, getInstance().USERNAME, getInstance().PASSWORD);
             PreparedStatement statement = db.prepareStatement("DELETE FROM products WHERE productid = ?")) {
