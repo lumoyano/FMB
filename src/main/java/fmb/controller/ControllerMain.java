@@ -1,7 +1,9 @@
 package fmb.controller;
 
 import fmb.model.Product;
+import fmb.serviceData.CategoryData;
 import fmb.serviceData.ProductData;
+import fmb.serviceData.TypeData;
 import fmb.tools.DBConfig;
 import fmb.tools.ErrorTool;
 import javafx.collections.FXCollections;
@@ -139,7 +141,13 @@ public class ControllerMain implements Initializable {
 
     @FXML
     private void refreshData() {
-        ProductData.getInstance().refreshData();
+        try {
+            ProductData.getInstance().refreshData();
+            CategoryData.getInstance().refreshData();
+            TypeData.getInstance().refreshData();
+        } catch (Exception e) {
+            ErrorTool.showAlert("DATABASE ERROR", "Properties file error: connection expected different url OR username OR password");
+        }
         populateTableValues();
         ErrorTool.showAlert("Data Refreshed", "Data has been refreshed and table repopulated");
     }

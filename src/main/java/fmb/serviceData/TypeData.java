@@ -60,7 +60,7 @@ public class TypeData implements DataAccessObject<PType> {
                 currentList.add(currentRow);
             }
         } catch (SQLException e) {
-            ErrorTool.showAlert("DATABASE ERROR", "Properties file error: connection expected different url OR username OR password");
+            //handled when called
         }
     }
 
