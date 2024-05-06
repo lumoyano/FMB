@@ -75,6 +75,7 @@ public class ControllerMain implements Initializable {
     private void populateTableValues() {
         populateProductTableView();
         populateCategoryTableView();
+        populateTypeTableView();
     }
 
     @FXML
@@ -140,6 +141,30 @@ public class ControllerMain implements Initializable {
         );
 
         categoryTableView.setItems(categories);
+    }
+
+    public void populateTypeTableView() {
+        typeTableView.getItems().clear();
+        typeTableView.getColumns().clear();
+
+        TableColumn<PType, Integer> idColumn = new TableColumn<>("TID");
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("typeID"));
+
+        TableColumn<PType, Integer> typeCategoryIdColumn = new TableColumn<>("Category");
+        typeCategoryIdColumn.setCellValueFactory(new PropertyValueFactory<>("categoryID"));
+
+        TableColumn<PType, String> typeNameColumn = new TableColumn<>("Type");
+        typeNameColumn.setCellValueFactory(new PropertyValueFactory<>("typeName"));
+
+        typeTableView.getColumns().addAll(idColumn, typeCategoryIdColumn, typeNameColumn);
+
+        // Populate TableView with data
+        ArrayList<PType> instance = TypeData.getInstance().getAll();
+        ObservableList<PType> types = FXCollections.observableArrayList(
+                instance
+        );
+
+        typeTableView.setItems(types);
     }
 
     @FXML
