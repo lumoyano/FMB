@@ -1,5 +1,7 @@
 package fmb.controller;
 
+import fmb.model.PCategory;
+import fmb.model.PType;
 import fmb.model.Product;
 import fmb.serviceData.CategoryData;
 import fmb.serviceData.ProductData;
@@ -13,10 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -30,7 +29,13 @@ import java.util.stream.Collectors;
 
 public class ControllerMain implements Initializable {
     @FXML
-    private TableView<Product> tableView;
+    private TableView<Product> productTableView;
+
+    @FXML
+    private TableView<PCategory> categoryTableView;
+
+    @FXML
+    private TableView<PType> typeTableView;
 
     @FXML
     private ChoiceBox<String> searchChoiceBox;
@@ -58,7 +63,7 @@ public class ControllerMain implements Initializable {
         });
 
         //Selected product listener
-        tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+        productTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection !=null)
                 currentRow = newSelection;
         });
@@ -66,12 +71,17 @@ public class ControllerMain implements Initializable {
         populateTableValues();
     }
 
-    @SuppressWarnings("unchecked")
     @FXML
     private void populateTableValues() {
+        populateProductTableView();
+        populateCategoryTableView();
+    }
+
+    @FXML
+    private void populateProductTableView() {
         // Clear TableView
-        tableView.getItems().clear();
-        tableView.getColumns().clear();
+        productTableView.getItems().clear();
+        productTableView.getColumns().clear();
 
         TableColumn<Product, Integer> idColumn = new TableColumn<>("ID");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("productID"));
@@ -101,14 +111,35 @@ public class ControllerMain implements Initializable {
         ingredientsColumn.setId("Ingredients");
         ingredientsColumn.setPrefWidth(250);
 
-        tableView.getColumns().addAll(idColumn, nameColumn, brandColumn, typeColumn, categoryColumn, ingredientsColumn);
+        productTableView.getColumns().addAll(idColumn, nameColumn, brandColumn, typeColumn, categoryColumn, ingredientsColumn);
 
         // Populate TableView with data
         ArrayList<Product> instance = ProductData.getInstance().getAll();
         ObservableList<Product> products = FXCollections.observableArrayList(
                 instance
         );
-        tableView.setItems(products);
+        productTableView.setItems(products);
+    }
+
+    public void populateCategoryTableView() {
+        categoryTableView.getItems().clear();
+        categoryTableView.getColumns().clear();
+
+        TableColumn<PCategory, Integer> idColumn = new TableColumn<>("CID");
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("categoryID"));
+
+        TableColumn<PCategory, String> categoryNameColumn = new TableColumn<>("Category name");
+        categoryNameColumn.setCellValueFactory(new PropertyValueFactory<>("categoryName"));
+
+        categoryTableView.getColumns().addAll(idColumn, categoryNameColumn);
+
+        // Populate TableView with data
+        ArrayList<PCategory> instance = CategoryData.getInstance().getAll();
+        ObservableList<PCategory> categories = FXCollections.observableArrayList(
+                instance
+        );
+
+        categoryTableView.setItems(categories);
     }
 
     @FXML
@@ -135,7 +166,7 @@ public class ControllerMain implements Initializable {
         ObservableList<Product> filteredData = FXCollections.observableArrayList(filteredList);
 
         // Update the display of your TableView with the filtered data
-        tableView.setItems(filteredData);
+        productTableView.setItems(filteredData);
 
     }
 
