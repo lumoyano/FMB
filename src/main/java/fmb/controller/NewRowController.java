@@ -20,7 +20,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -78,7 +77,7 @@ public class NewRowController implements Initializable {
     public void loadCategories() {
         //load category
         CategoryData.getInstance().refreshData();
-        ArrayList<PCategory> categories = CategoryData.getInstance().getCurrentList();
+        ArrayList<PCategory> categories = CategoryData.getInstance().getAll();
         categoryOptions = new String[categories.size()];
         for (int i=0; i<categoryOptions.length; i++) {
             categoryOptions[i] = categories.get(i).getCategoryID() + ", "
@@ -121,7 +120,7 @@ public class NewRowController implements Initializable {
                 category,
                 ingredients);
         try{
-            ProductData.getInstance().addProduct(newRow);
+            ProductData.getInstance().add(newRow);
             ErrorTool.showAlertAndClose("New Row added",
                     "Succesfully added row. Please refresh to see changes", stage);
         } catch (Exception e) {

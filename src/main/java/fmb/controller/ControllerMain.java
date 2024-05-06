@@ -1,7 +1,11 @@
 package fmb.controller;
 
+import fmb.model.PCategory;
+import fmb.model.PType;
 import fmb.model.Product;
+import fmb.serviceData.CategoryData;
 import fmb.serviceData.ProductData;
+import fmb.serviceData.TypeData;
 import fmb.tools.DBConfig;
 import fmb.tools.ErrorTool;
 import javafx.collections.FXCollections;
@@ -11,10 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -28,7 +29,13 @@ import java.util.stream.Collectors;
 
 public class ControllerMain implements Initializable {
     @FXML
-    private TableView<Product> tableView;
+    private TableView<Product> productTableView;
+
+    @FXML
+    private TableView<PCategory> categoryTableView;
+
+    @FXML
+    private TableView<PType> typeTableView;
 
     @FXML
     private ChoiceBox<String> searchChoiceBox;
@@ -56,7 +63,7 @@ public class ControllerMain implements Initializable {
         });
 
         //Selected product listener
-        tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+        productTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection !=null)
                 currentRow = newSelection;
         });
@@ -64,12 +71,18 @@ public class ControllerMain implements Initializable {
         populateTableValues();
     }
 
-    @SuppressWarnings("unchecked")
     @FXML
     private void populateTableValues() {
+        populateProductTableView();
+        populateCategoryTableView();
+        populateTypeTableView();
+    }
+
+    @FXML
+    private void populateProductTableView() {
         // Clear TableView
-        tableView.getItems().clear();
-        tableView.getColumns().clear();
+        productTableView.getItems().clear();
+        productTableView.getColumns().clear();
 
         TableColumn<Product, Integer> idColumn = new TableColumn<>("ID");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("productID"));
@@ -99,14 +112,59 @@ public class ControllerMain implements Initializable {
         ingredientsColumn.setId("Ingredients");
         ingredientsColumn.setPrefWidth(250);
 
-        tableView.getColumns().addAll(idColumn, nameColumn, brandColumn, typeColumn, categoryColumn, ingredientsColumn);
+        productTableView.getColumns().addAll(idColumn, nameColumn, brandColumn, typeColumn, categoryColumn, ingredientsColumn);
 
         // Populate TableView with data
-        ArrayList<Product> instance = ProductData.getInstance().getCurrentList();
+        ArrayList<Product> instance = ProductData.getInstance().getAll();
         ObservableList<Product> products = FXCollections.observableArrayList(
                 instance
         );
-        tableView.setItems(products);
+        productTableView.setItems(products);
+    }
+
+    public void populateCategoryTableView() {
+        categoryTableView.getItems().clear();
+        categoryTableView.getColumns().clear();
+
+        TableColumn<PCategory, Integer> idColumn = new TableColumn<>("CID");
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("categoryID"));
+
+        TableColumn<PCategory, String> categoryNameColumn = new TableColumn<>("Category name");
+        categoryNameColumn.setCellValueFactory(new PropertyValueFactory<>("categoryName"));
+
+        categoryTableView.getColumns().addAll(idColumn, categoryNameColumn);
+
+        // Populate TableView with data
+        ArrayList<PCategory> instance = CategoryData.getInstance().getAll();
+        ObservableList<PCategory> categories = FXCollections.observableArrayList(
+                instance
+        );
+
+        categoryTableView.setItems(categories);
+    }
+
+    public void populateTypeTableView() {
+        typeTableView.getItems().clear();
+        typeTableView.getColumns().clear();
+
+        TableColumn<PType, Integer> idColumn = new TableColumn<>("TID");
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("typeID"));
+
+        TableColumn<PType, Integer> typeCategoryIdColumn = new TableColumn<>("Category");
+        typeCategoryIdColumn.setCellValueFactory(new PropertyValueFactory<>("categoryID"));
+
+        TableColumn<PType, String> typeNameColumn = new TableColumn<>("Type");
+        typeNameColumn.setCellValueFactory(new PropertyValueFactory<>("typeName"));
+
+        typeTableView.getColumns().addAll(idColumn, typeCategoryIdColumn, typeNameColumn);
+
+        // Populate TableView with data
+        ArrayList<PType> instance = TypeData.getInstance().getAll();
+        ObservableList<PType> types = FXCollections.observableArrayList(
+                instance
+        );
+
+        typeTableView.setItems(types);
     }
 
     @FXML
@@ -115,7 +173,7 @@ public class ControllerMain implements Initializable {
         String selectedOption = searchChoiceBox.getValue(); // Get selected search option from choice box
 
         // Filter the data in your TableView based on the search query and selected search option
-        ArrayList<Product> currentList = ProductData.getInstance().getCurrentList();
+        ArrayList<Product> currentList = ProductData.getInstance().getAll();
         List<Product> filteredList = currentList.stream()
                 .filter(product -> {
                     // Convert product details to lowercase for case-insensitive search
@@ -133,13 +191,19 @@ public class ControllerMain implements Initializable {
         ObservableList<Product> filteredData = FXCollections.observableArrayList(filteredList);
 
         // Update the display of your TableView with the filtered data
-        tableView.setItems(filteredData);
+        productTableView.setItems(filteredData);
 
     }
 
     @FXML
     private void refreshData() {
-        ProductData.getInstance().refreshData();
+        try {
+            ProductData.getInstance().refreshData();
+            CategoryData.getInstance().refreshData();
+            TypeData.getInstance().refreshData();
+        } catch (Exception e) {
+            ErrorTool.showAlert("DATABASE ERROR", "Properties file error: connection expected different url OR username OR password");
+        }
         populateTableValues();
         ErrorTool.showAlert("Data Refreshed", "Data has been refreshed and table repopulated");
     }
@@ -193,7 +257,7 @@ public class ControllerMain implements Initializable {
 
         // Check if an item is selected
         if (selectedProduct != null) {
-            ProductData.getInstance().deleteProduct(selectedProduct.getProductID());
+            ProductData.getInstance().delete(selectedProduct.getProductID());
         }
         ErrorTool.showAlert("Delete Row", "This row was deleted. Please refresh to reflect changes");
     }

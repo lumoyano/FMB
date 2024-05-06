@@ -79,7 +79,7 @@ public class EditRowController implements Initializable {
     private void loadCategories() {
         //load category
         CategoryData.getInstance().refreshData();
-        ArrayList<PCategory> categories = CategoryData.getInstance().getCurrentList();
+        ArrayList<PCategory> categories = CategoryData.getInstance().getAll();
         categoryOptions = new String[categories.size()];
         for (int i=0; i<categoryOptions.length; i++) {
             categoryOptions[i] = categories.get(i).getCategoryID() + ", "
@@ -116,7 +116,7 @@ public class EditRowController implements Initializable {
                 category,
                 ingredients);
         try{
-            ProductData.getInstance().updateProduct(newRow);
+            ProductData.getInstance().update(newRow);
             ErrorTool.showAlertAndClose("Edit Row",
                     "Changes to row were made. Please refresh to see changes", stage);
         } catch (Exception e) {
