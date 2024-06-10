@@ -8,6 +8,7 @@ import fmb.serviceData.ProductData;
 import fmb.serviceData.TypeData;
 import fmb.tools.DBConfig;
 import fmb.tools.ErrorTool;
+import fmb.tools.ScraperTool;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -282,6 +283,15 @@ public class ControllerMain implements Initializable {
         }
     }
 
+    @FXML
+    public void newRowBulk() throws IOException {
+        ArrayList<String> itemsList = ScraperTool.getBrandSoup("");
+        for (String s :
+                itemsList) {
+            Product p = ScraperTool.getItemSoup("https://incidecoder.com"+s);
+            ProductData.getInstance().add(p);
+        }
+    }
 
     @FXML
     public void clearConnection() {
