@@ -30,7 +30,7 @@ public class LinkPopUpController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         linkTextField.textProperty().addListener( (observable, oldValue, newValue) -> {
             try {
-                expectedIngredients = ScraperTool.getSoup(linkTextField.getText());
+                expectedIngredients = ScraperTool.getIngredients(linkTextField.getText());
             } catch (IOException e) {
                 return;
             }

@@ -4,6 +4,7 @@ import fmb.serviceData.CategoryData;
 import fmb.serviceData.ProductData;
 import fmb.serviceData.TypeData;
 import fmb.tools.ErrorTool;
+import fmb.tools.ScraperTool;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import fmb.tools.UI;
@@ -19,6 +20,7 @@ public class DataEntry extends Application {
             ProductData.getInstance().refreshData();
             CategoryData.getInstance().refreshData();
             TypeData.getInstance().refreshData();
+            ScraperTool.getBrandSoup("https://incidecoder.com/brands/mac");
         } catch (Exception e) {
             ErrorTool.showAlert("DATABASE ERROR", "Properties file error: connection expected different url OR username OR password");
         }
